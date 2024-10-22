@@ -1,0 +1,22 @@
+\l: This command lists all the databases in your PostgreSQL server. 
+It shows the database names along with some other information like the owner, encoding, and access privileges.
+
+\c database_name: This command connects you to the specified database (replace database_name with the actual name of the database you want to connect to). 
+After executing this, all subsequent commands will be run in the context of that database.
+
+\dt: This command displays all the tables in the currently connected database. 
+It shows the schema, name, type, and owner of each table.
+
+\dv: This command lists all the views in the current database. 
+Similar to \dt, it shows the schema, name, type, and owner of each view.
+
+\d - This command lists all tables, views, and sequences in the current database. 
+ 
+\d <specifc_table_name> - If you want to see the details of a specific table.
+ 
+\du - It used to list all database roles (users) along with their attributes and permissions.
+ 
+\ds - This command lists all sequences in the current database.
+ 
+\dp <specifc_table_name> - It used in the psql command-line interface to display the access privileges (permissions) of the specified table.
+\dp+   - It used to list the access privileges for tables, views, and sequences in the current database.
