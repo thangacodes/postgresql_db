@@ -1,146 +1,55 @@
--- Script Usage
 DO $$
 BEGIN
-    RAISE NOTICE 'CREATING A TABLE against a DATABASE';
+    RAISE NOTICE 'CREATING DATABASE';
 END $$;
-CREATE TABLE EMPLOYEE_INFO (
+
+CREATE DATABASE vedhu;
+
+-- Connect to the 'vedhu' database
+\c vedhu vadmin;  --Connecting the newly created database using superuser called 'vadmin'
+
+DO $$
+BEGIN
+    RAISE NOTICE 'Sleeping for 5 seconds...';
+    PERFORM pg_sleep(5);
+    RAISE NOTICE 'conninfo...';
+    \conninfo
+END $$;
+
+-- Print a message for creating the FAMILY table
+DO $$
+BEGIN
+    RAISE NOTICE 'CREATING FAMILY TABLE against the DATABASE';
+END $$;
+
+-- Create the FAMILY table
+CREATE TABLE FAMILY (
     id SERIAL PRIMARY KEY,
-    employee_name VARCHAR(100),
-    emp_id VARCHAR(100) NOT NULL,
-    position VARCHAR(100),
-    email_id VARCHAR(100)
-);
-DO $$
-BEGIN
-    RAISE NOTICE 'INSERTING DATAS TO A TABLE against a DATABASE';
-END $$;
-INSERT INTO EMPLOYEE_INFO (employee_name, emp_id, position, email_id)
-VALUES 
-    ('rajesh', '1203', 'MLOps Engineer', 'rajesh@example.com'),
-    ('sijesh', '1204', 'AI Engineer', 'sijesh@example.com'),
-    ('murugan', '1205', 'Project Manager', 'murugan@example.com');
--- 
-DO $$
-BEGIN
-    RAISE NOTICE 'INSERTING DATAS TO A TABLE against a DATABASE';
-END $$;
-INSERT INTO EMPLOYEE_INFO (employee_name, emp_id, position, email_id)
-VALUES 
-    ('priya', '1206', 'TAG Analyst', 'priya@example.com'),
-    ('sivani', '1207', 'TAG Lead', 'sivani@example.com'),
-    ('Indraja', '1208', 'TAG Head', 'indraja@example.com');
--- 
-DO $$
-BEGIN
-    RAISE NOTICE 'CREATING A TABLE against a DATABASE';
-END $$;
-CREATE TABLE project_managers (
-    id SERIAL PRIMARY KEY,
-    employee_name VARCHAR(100),
-    emp_id VARCHAR(100) NOT NULL,
-    position VARCHAR(100),
-    email_id VARCHAR(100)
-);
-DO $$
-BEGIN
-    RAISE NOTICE 'CREATING A TABLE against a DATABASE';
-END $$;
-CREATE TABLE site_operations (
-    id SERIAL PRIMARY KEY,
-    employee_name VARCHAR(100),
-    emp_id VARCHAR(100) NOT NULL,
-    position VARCHAR(100),
-    email_id VARCHAR(100)
-);
---
-DO $$
-BEGIN
-    RAISE NOTICE 'INSERTING A TABLE against a DATABASE';
-END $$;
-INSERT INTO project_managers (employee_name, emp_id, position, email_id)
-VALUES 
-    ('Kiran', '1210', 'Project Manager', 'kiran@exnample.com'),
-    ('Anita', '1211', 'Senior Project Manager', 'anita@example.com');
-INSERT INTO site_operations (employee_name, emp_id, position, email_id)
-VALUES 
-    ('Suresh', '1212', 'Site Supervisor', 'suresh@example.com'),
-    ('girish', '1213', 'Operations Manager', 'girish@example.com');
---
--- How can I connect to the 'anvi' database using an application or functional user named 'dbadmin'?
-DO $$
-BEGIN
-    RAISE NOTICE 'CREATE USER, GRANT PRIVILEGES, against a DATABASE CALLED ANVI';
-END $$;
-begin;
-set local lock_timeout='2s'; 
-CREATE USER dbadmin WITH PASSWORD '12345';  # Create the user with password set
-GRANT CONNECT ON DATABASE anvi TO dbadmin;  # Grant privileges to the database
-GRANT USAGE ON SCHEMA public TO dbadmin;    # Grant usage on the schema (assuming it's the public schema)
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO dbadmin; # Grant privileges on all tables in the schema:
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO dbadmin; # Ensure that any future tables created in the schema also grant these privileges
-commit;
--- 
-DO $$
-BEGIN
-    RAISE NOTICE 'CREATING TABLES against a DATABASE';
-END $$;
-CREATE TABLE operations;
-CREATE TABLE housekeeping (
-    id SERIAL PRIMARY KEY,
-    employee_name VARCHAR(100),
-    vendor_name VARCHAR(100),
-    email_id VARCHAR(100)
-);
-CREATE TABLE guest (
-    id SERIAL PRIMARY KEY,
-    employee_name VARCHAR(100),
-    visit_purpose VARCHAR(100),
-    email_id VARCHAR(100)
+    members_name VARCHAR(90),
+    members_age INT NOT NULL, -- Changed to INT for age
+    members_education VARCHAR(90),
+    members_dob DATE -- Changed to DATE for better data handling
 );
 
-INSERT INTO housekeeping (employee_name, vendor_name, email_id)
-VALUES 
-    ('Hari', 'SSS', 'Hari@example.com'),
-    ('Dhamodhar', 'SSS', 'Dhamodhar@example.com');
+INSERT INTO FAMILY (members_name, members_age, members_education, members_dob)
+VALUES
+    ('joe', 35, 'engineering', '1989-06-07'),
+    ('john', 36, 'engineering', '1989-04-10'),
+    ('silpa', 42, 'degree', '1882-10-02'),
+    ('ajay', 32, 'degree', '1992-08-12'),
+    ('spurthi', 35, 'engineering', '1989-08-15'),
+    ('vedhu', 20, 'doctor', '1990-03-03');
 
-INSERT INTO guest (employee_name, visit_purpose, email_id)
-VALUES 
-    ('david', 'Meetup with CEO', 'david@johnson.com'),
-    ('john', 'Meetup with CTO', 'john@apple.com');
--- 
--- How to check the sizes of the tables guest and housekeeping ?
-SELECT pg_size_pretty(pg_total_relation_size('guest'));
-SELECT pg_size_pretty(pg_total_relation_size('housekeeping'));
-SELECT table_name, pg_size_pretty(pg_total_relation_size(table_name)) AS size
-FROM (VALUES ('guest'), ('housekeeping')) AS t(table_name);
-
--- 
--- How can I connect to the 'operations' database using an application or functional user named 'appadmin'?
-begin;
-set local lock_timeout='2s'; 
-CREATE USER appadmin WITH PASSWORD '12345';  
-GRANT CONNECT ON DATABASE operations TO appadmin;  
-GRANT USAGE ON SCHEMA public TO appadmin;    
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO appadmin; 
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO appadmin;
-commit;
--- 
-begin;
-set local lock_timeout='2s'; 
-GRANT CONNECT ON DATABASE operations TO postgres;  
-GRANT USAGE ON SCHEMA public TO postgres;    
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO postgres; 
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO postgres;
-commit;
---
+-- Create a Role called vadmin with password
 DO $$
 BEGIN
-    RAISE NOTICE 'CHECKING DATABASE SIZE FOR DATABASES';
+   RAISE NOTICE 'creating role vadmin and granting permission to the database vedhu';
 END $$;
-SELECT pg_size_pretty(pg_database_size('anvi')) AS size_of_anvi;
-SELECT pg_size_pretty(pg_database_size('operations')) AS size_of_operations;
-SELECT pg_size_pretty(pg_database_size('postgres')) AS size_of_postgres;
 
-
-
-
+-- Create Role vadmin with password
+CREATE ROLE vadmin WITH LOGIN PASSWORD 'login1-2'; -- Use CREATE ROLE with LOGIN
+GRANT CONNECT ON DATABASE vedhu TO vadmin;
+GRANT USAGE ON SCHEMA public TO vadmin; -- Grant to vadmin, not vedhu
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO vadmin; -- Grant to vadmin
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO vadmin; -- Grant to vadmin
+GRANT TRUNCATE ON TABLE family TO vadmin;
