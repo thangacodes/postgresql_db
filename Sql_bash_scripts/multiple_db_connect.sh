@@ -1,24 +1,26 @@
 #!/bin/bash
-
-echo "Color coding for a shell script..."
+echo "Setting up color coding function..."
 
 # Function to print green text
 green() {
     echo -e "\e[1;32mThis text is green\e[0m"
 }
-
+# Function to print red text
+red() {
+    echo -e "\e[1;31mThis text is red\e[0m"
+}
 # Function to print yellow text
 red() {
-    echo -e "\e[1;31mThis text is yellow\e[0m"
+    echo -e "\e[1;33mThis text is yellow\e[0m"
 }
-
 # Execute color functions
 green
 red
+yellow
 
 # Print execution timestamp
 echo "green() Script executed at: $(date '+%Y-%m-%d %H:%M:%S')"
-echo "You are working with app-service root-user to connect to src (OR) dest databases. Please select based on your needs."
+echo "yellow() You are working with app-service root-user to connect to src (OR) dest databases. Please select based on your needs."
 
 # Variables
 src_db="app1.ap-south-1.rds.amazonaws.com"
